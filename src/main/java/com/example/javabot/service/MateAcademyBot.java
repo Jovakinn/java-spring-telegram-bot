@@ -10,7 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @Component
@@ -55,6 +57,14 @@ public class MateAcademyBot extends TelegramLongPollingBot {
             sendMessage.setText(text);
         }
 
+        if (message.getText().equals("surprise")) {
+            List<String> optionsOfMenu = Arrays.asList("breakfast", "dinner", "lunch", "supper");
+            Random random = new Random();
+
+            int randomIndex = random.nextInt(optionsOfMenu.size());
+            message.setText(optionsOfMenu.get(randomIndex));
+        }
+
         if (message.getText().equals("breakfast")) {
             String menu = "Breakfast menu!\n";
             menu += "1. Blueberry-Banana-Nut Smoothie\n";
@@ -88,10 +98,6 @@ public class MateAcademyBot extends TelegramLongPollingBot {
 
             sendMessage.setText(menu);
         }
-        // TODO random choice of menu setup
-        if (message.getText().equals("surprise me")) {
-
-        }
 
         try {
             execute(sendMessage);
@@ -117,7 +123,7 @@ public class MateAcademyBot extends TelegramLongPollingBot {
         keyboardRow2.add("supper");
 
         KeyboardRow keyboardRow3 = new KeyboardRow();
-        keyboardRow3.add("surprise me");
+        keyboardRow3.add("surprise");
 
         keyboardRows.add(keyboardRow1);
         keyboardRows.add(keyboardRow2);
