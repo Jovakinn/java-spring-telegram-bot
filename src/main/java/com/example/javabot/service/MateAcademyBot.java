@@ -126,9 +126,19 @@ public class MateAcademyBot extends TelegramLongPollingBot {
         KeyboardRow keyboardRow3 = new KeyboardRow();
         keyboardRow3.add("surprise");
 
+        KeyboardRow keyboardRow4 = new KeyboardRow();
+        keyboardRow2.add("Time");
+        keyboardRow2.add("Date");
+
+        KeyboardRow keyboardRow5 = new KeyboardRow();
+        keyboardRow2.add("Capital?");
+        keyboardRow2.add("Order pizza");
+
         keyboardRows.add(keyboardRow1);
         keyboardRows.add(keyboardRow2);
         keyboardRows.add(keyboardRow3);
+        keyboardRows.add(keyboardRow4);
+        keyboardRows.add(keyboardRow5);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         return replyKeyboardMarkup;
