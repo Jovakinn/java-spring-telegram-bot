@@ -35,25 +35,26 @@ public class MateAcademyBot extends TelegramLongPollingBot {
         String username = message.getFrom().getUserName();
         String firstName = message.getFrom().getFirstName();
         String lastName = message.getFrom().getLastName();
+        Long chatId = message.getChatId();
         Long ChatId = message.getFrom().getId();
         String loggerInfoAboutUserRequest = "Chat id: " + "[" + ChatId +"] " + "User: "+ firstName + " " + lastName +
                 " (@" + username + ")" + " entered message: " + message.getText();
 
-        LOGGER.info(loggerInfoAboutUserRequest);
-        String responseToUserForANonCommandRequest = "Hello user! I received your message: " + message.getText() +"; " +
-                " However I don't understand such a command ;( Try again! or contact @Jovakinn " +
+        String responseToUserForANonCommandRequest = "Hello "+ firstName + " " + lastName+ "! I received your message: "
+                + message.getText() +"; " + " However I don't understand such a command" +
+                " ;( Try again! Or contact @Jovakinn " +
                 "for a personal special service!";
 
+        LOGGER.info(loggerInfoAboutUserRequest);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(responseToUserForANonCommandRequest);
-        sendMessage.setChatId(String.valueOf(message.getChatId()));
+        sendMessage.setChatId(String.valueOf(chatId));
 
         if (message.getText().equals("/start")){
             String text = "Welcome to Recipe bot! Please choose the meal of the day!\n";
 
             sendMessage.enableMarkdown(true);
-            ReplyKeyboardMarkup keyboardMarkup = getMenuKeyboard();
-            sendMessage.setReplyMarkup(keyboardMarkup);
+            sendMessage.setReplyMarkup(getMenuKeyboard());
             sendMessage.setText(text);
         }
 
