@@ -52,13 +52,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         LOGGER.info(loggerInfoAboutUserRequest);
 
 
- /*       if (message.getText().equals("/start")){
-            String text = "Welcome to Recipe bot! Please choose the meal of the day!\n";
-
-            sendMessage.enableMarkdown(true);
-         //   sendMessage.setReplyMarkup(getMainMenu());
-            sendMessage.setText(text);
-        }
+ /*
 
         if (message.getText().equals("surprise")) {
             List<String> optionsOfMenu = Arrays.asList("breakfast", "dinner", "lunch", "supper");
@@ -69,10 +63,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         }
 
         if (message.getText().equals("breakfast")) {
-            String menu = "Breakfast menu!\n";
-            menu += "1. Blueberry-Banana-Nut Smoothie\n";
-            menu += "2. Classic Omelet and Greens\n";
-            menu += "3. Curry-Avocado Crispy Egg Toast\n";
+
 
             sendMessage.setText(menu);
         }
@@ -151,6 +142,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         switch (message.getText()) {
             case START_REQUEST:
                 return getStartFunctionalResponse(message);
+            case BREAKFAST_REQUEST:
+                return getBreakfastResponse(message);
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
             case ORDER_PIZZA_REQUEST:
@@ -188,6 +181,19 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
         return response;
 
+    }
+
+    private SendMessage getBreakfastResponse(Message message) {
+        SendMessage response = new SendMessage();
+        String breakfastMenu = "Breakfast menu!\n";
+        breakfastMenu += "1. Blueberry-Banana-Nut Smoothie\n";
+        breakfastMenu += "2. Classic Omelet and Greens\n";
+        breakfastMenu += "3. Curry-Avocado Crispy Egg Toast\n";
+
+        response.setChatId(String.valueOf(message.getChatId()));
+        response.setText(breakfastMenu);
+
+        return response;
     }
 
     private SendMessage getCurrentTimeResponse(Message message) {
