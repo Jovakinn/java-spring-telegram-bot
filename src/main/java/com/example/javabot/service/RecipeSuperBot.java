@@ -9,15 +9,19 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Logger;
 
 @Component
-public class MateAcademyBot extends TelegramLongPollingBot {
-    private static final Logger LOGGER = Logger.getLogger(MateAcademyBot.class.getName());
+public class RecipeSuperBot extends TelegramLongPollingBot {
+    private static final Logger LOGGER = Logger.getLogger(RecipeSuperBot.class.getName());
+    private static final String TIME_REQUEST = "Time";
+    private static final String DATE_REQUEST = "Date";
+    private static final String CAPITAL_REQUEST = "Capital?";
+    private static final String ORDER_PIZZA_REQUEST = "Order pizza";
 
     @Override
     public String getBotUsername() {
@@ -39,22 +43,14 @@ public class MateAcademyBot extends TelegramLongPollingBot {
         Long ChatId = message.getFrom().getId();
         String loggerInfoAboutUserRequest = "Chat id: " + "[" + ChatId +"] " + "User: "+ firstName + " " + lastName +
                 " (@" + username + ")" + " entered message: " + message.getText();
-
-        String responseToUserForANonCommandRequest = "Hello "+ firstName + " " + lastName+ "! I received your message: "
-                + message.getText() +"; " + " However I don't understand such a command" +
-                " ;( Try again! Or contact @Jovakinn " +
-                "for a personal special service!";
-
         LOGGER.info(loggerInfoAboutUserRequest);
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(responseToUserForANonCommandRequest);
-        sendMessage.setChatId(String.valueOf(chatId));
 
-        if (message.getText().equals("/start")){
+
+ /*       if (message.getText().equals("/start")){
             String text = "Welcome to Recipe bot! Please choose the meal of the day!\n";
 
             sendMessage.enableMarkdown(true);
-            sendMessage.setReplyMarkup(getMenuKeyboard());
+         //   sendMessage.setReplyMarkup(getMainMenu());
             sendMessage.setText(text);
         }
 
@@ -98,16 +94,16 @@ public class MateAcademyBot extends TelegramLongPollingBot {
             menu += "3. Fish and chips\n";
 
             sendMessage.setText(menu);
-        }
+        }*/
 
         try {
-            execute(sendMessage);
+            execute(getResponseMessage(message));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
 
-    private ReplyKeyboardMarkup getMenuKeyboard() {
+    private ReplyKeyboardMarkup getMainMenu() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -127,12 +123,12 @@ public class MateAcademyBot extends TelegramLongPollingBot {
         keyboardRow3.add("surprise");
 
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardRow2.add("Time");
-        keyboardRow2.add("Date");
+        keyboardRow2.add(TIME_REQUEST);
+        keyboardRow2.add(DATE_REQUEST);
 
         KeyboardRow keyboardRow5 = new KeyboardRow();
-        keyboardRow2.add("Capital?");
-        keyboardRow2.add("Order pizza");
+        keyboardRow2.add(CAPITAL_REQUEST);
+        keyboardRow2.add(ORDER_PIZZA_REQUEST);
 
         keyboardRows.add(keyboardRow1);
         keyboardRows.add(keyboardRow2);
@@ -142,5 +138,40 @@ public class MateAcademyBot extends TelegramLongPollingBot {
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         return replyKeyboardMarkup;
+    }
+
+    private SendMessage getResponseMessage(Message message) {
+        switch (message.getText()) {
+            case TIME_REQUEST:
+                return  getCurrentTimeResponse(message);
+            default:
+                return doStandardResponseForNoRequest(message);
+        }
+    }
+
+    private SendMessage doStandardResponseForNoRequest(Message message) {
+        String firstName = message.getFrom().getFirstName();
+        String lastName = message.getFrom().getLastName();
+        Long chatId = message.getChatId();
+
+        String responseToUserForANonCommandRequest = "Hello "+ firstName + " " + lastName+ "! I received your message: "
+                + message.getText() +"; " + " However I don't understand such a command" +
+                " ;( Try again! Or contact @Jovakinn " +
+                "for a personal special service!";
+        SendMessage response = new SendMessage();
+        response.setText(responseToUserForANonCommandRequest);
+        response.setChatId(String.valueOf(chatId));
+        response.setReplyMarkup(getMainMenu());
+
+        return response;
+    }
+
+    private SendMessage getCurrentTimeResponse(Message message) {
+        SendMessage response = new SendMessage();
+        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH::mm")));
+        response.setChatId(String.valueOf(message.getChatId()));
+        response.setReplyMarkup(getMainMenu());
+
+        return response;
     }
 }
