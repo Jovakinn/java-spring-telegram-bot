@@ -22,6 +22,10 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final String DATE_REQUEST = "Date";
     private static final String CAPITAL_REQUEST = "Capital?";
     private static final String ORDER_PIZZA_REQUEST = "Order pizza";
+    private static final String CARBONARA_36_AS_USUAL_REQUEST = "Carbonara 36 as usual";
+    private static final String MARGARITA_REQUEST = "Margarita";
+    private static final String PAPERONNI_REQUEST = "Paperonni";
+    private static final String DRINKS_REQUEST = "Drinks";
 
     @Override
     public String getBotUsername() {
@@ -39,7 +43,6 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         String username = message.getFrom().getUserName();
         String firstName = message.getFrom().getFirstName();
         String lastName = message.getFrom().getLastName();
-        Long chatId = message.getChatId();
         Long ChatId = message.getFrom().getId();
         String loggerInfoAboutUserRequest = "Chat id: " + "[" + ChatId +"] " + "User: "+ firstName + " " + lastName +
                 " (@" + username + ")" + " entered message: " + message.getText();
@@ -103,6 +106,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         }
     }
 
+    // design of keyboard
     private ReplyKeyboardMarkup getMainMenu() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
@@ -144,6 +148,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         switch (message.getText()) {
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
+            case ORDER_PIZZA_REQUEST:
+                return getOrderPizzaResponse(message);
             default:
                 return doStandardResponseForNoRequest(message);
         }
@@ -168,9 +174,41 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
     private SendMessage getCurrentTimeResponse(Message message) {
         SendMessage response = new SendMessage();
-        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH::mm")));
+        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH::mm::ss")));
         response.setChatId(String.valueOf(message.getChatId()));
         response.setReplyMarkup(getMainMenu());
+
+        return response;
+    }
+    // pizza
+    private ReplyKeyboardMarkup createChoosePizzaMenu() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        KeyboardRow keyboardRow1 = new KeyboardRow();
+        keyboardRow1.add(CARBONARA_36_AS_USUAL_REQUEST);
+        keyboardRow1.add(MARGARITA_REQUEST);
+
+        KeyboardRow keyboardRow2 = new KeyboardRow();
+        keyboardRow2.add(PAPERONNI_REQUEST);
+        keyboardRow2.add(DRINKS_REQUEST);
+
+        keyboardRows.add(keyboardRow1);
+        keyboardRows.add(keyboardRow2);
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+
+        return replyKeyboardMarkup;
+    }
+
+    private SendMessage getOrderPizzaResponse(Message message) {
+        SendMessage response = new SendMessage();
+        String textResponse = "PLease make your completely independent choice:)";
+        response.setText(textResponse);
+        response.setReplyMarkup(createChoosePizzaMenu());
+        response.setChatId(String.valueOf(message.getChatId()));
 
         return response;
     }
