@@ -11,8 +11,9 @@ import java.util.logging.Logger;
 public class MainMenuKeyboard {
     private static final Logger LOGGER = Logger.getLogger(RecipeSuperBot.class.getName());
     private static final String START_REQUEST = "/start";
-    private static final String TIME_REQUEST = "Time";
-    private static final String DATE_REQUEST = "Date";
+    /*private static final String TIME_REQUEST = "Time";
+    private static final String DATE_REQUEST = "Date";*/
+    private static final String DATE_AND_TIME_REQUEST = "DateAndTime";
     private static final String CAPITAL_REQUEST = "Capital?";
     private static final String ORDER_PIZZA_REQUEST = "Order pizza";
     private static final String BREAKFAST_REQUEST = "breakfast";
@@ -41,8 +42,9 @@ public class MainMenuKeyboard {
         keyboardRow3.add(SURPRISE_REQUEST);
 
         KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardRow2.add(TIME_REQUEST);
-        keyboardRow2.add(DATE_REQUEST);
+       /* keyboardRow2.add(TIME_REQUEST);
+        keyboardRow2.add(DATE_REQUEST);*/
+        keyboardRow4.add(DATE_AND_TIME_REQUEST);
 
         KeyboardRow keyboardRow5 = new KeyboardRow();
         keyboardRow2.add(CAPITAL_REQUEST);
