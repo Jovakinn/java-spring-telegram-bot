@@ -1,22 +1,23 @@
 package com.example.javabot.service;
 
-import com.example.javabot.emoji.Emoji;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Logger;
+
+import static com.example.javabot.models.Pizza.getOrderPizzaResponse;
+import static com.example.javabot.models.TimeAndDateUtility.getCurrentDateResponse;
+import static com.example.javabot.models.TimeAndDateUtility.getCurrentTimeResponse;
+import static com.example.javabot.models.meals.Breakfast.getBreakfastResponse;
+import static com.example.javabot.models.meals.Dinner.getDinnerResponse;
+import static com.example.javabot.models.meals.Lunch.getLunchResponse;
+import static com.example.javabot.models.meals.Supper.getSupperResponse;
+import static com.example.javabot.models.meals.Surprise.getSurpriseResponse;
+import static com.example.javabot.view.MainMenuKeyboard.getMainMenu;
 
 @Component
 public class RecipeSuperBot extends TelegramLongPollingBot {
@@ -27,10 +28,6 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final String DATE_REQUEST = "Date";
     private static final String CAPITAL_REQUEST = "Capital?";
     private static final String ORDER_PIZZA_REQUEST = "Order pizza";
-    private static final String CARBONARA_36_AS_USUAL_REQUEST = "Carbonara 36 as usual";
-    private static final String MARGARITA_REQUEST = "Margarita";
-    private static final String PAPERONNI_REQUEST = "Paperonni";
-    private static final String DRINKS_REQUEST = "Drinks";
     private static final String BREAKFAST_REQUEST = "breakfast";
     private static final String DINNER_REQUEST = "dinner";
     private static final String LUNCH_REQUEST = "lunch";
@@ -65,44 +62,6 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         }
     }
 
-    // design of keyboard
-    private ReplyKeyboardMarkup getMainMenu() {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-
-        KeyboardRow keyboardRow1 = new KeyboardRow();
-        keyboardRow1.add(BREAKFAST_REQUEST);
-        keyboardRow1.add(DINNER_REQUEST);
-
-        KeyboardRow keyboardRow2 = new KeyboardRow();
-        keyboardRow2.add(LUNCH_REQUEST);
-        keyboardRow2.add(SUPPER_REQUEST);
-
-        KeyboardRow keyboardRow3 = new KeyboardRow();
-        keyboardRow3.add(SURPRISE_REQUEST);
-
-        KeyboardRow keyboardRow4 = new KeyboardRow();
-        keyboardRow2.add(TIME_REQUEST);
-        keyboardRow2.add(DATE_REQUEST);
-
-        KeyboardRow keyboardRow5 = new KeyboardRow();
-        keyboardRow2.add(CAPITAL_REQUEST);
-        keyboardRow2.add(ORDER_PIZZA_REQUEST);
-
-        keyboardRows.add(keyboardRow1);
-        keyboardRows.add(keyboardRow2);
-        keyboardRows.add(keyboardRow3);
-        keyboardRows.add(keyboardRow4);
-        keyboardRows.add(keyboardRow5);
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-
-        return replyKeyboardMarkup;
-    }
-
     private SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
             case START_REQUEST:
@@ -118,7 +77,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
             case SURPRISE_REQUEST:
                 return getSurpriseResponse(message);
             case TIME_REQUEST:
-                return  getCurrentTimeResponse(message);
+                return getCurrentTimeResponse(message);
             case DATE_REQUEST:
                 return getCurrentDateResponse(message);
             case ORDER_PIZZA_REQUEST:
@@ -152,139 +111,6 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         response.enableMarkdown(true);
         response.setReplyMarkup(getMainMenu());
         response.setText(text);
-        response.setChatId(String.valueOf(message.getChatId()));
-
-        return response;
-    }
-
-    // surprise functionality
-    private SendMessage getSurpriseResponse(Message message) {
-        List<String> optionsOfMenu = Arrays.asList("breakfast", "dinner", "lunch", "supper");
-        Random random = new Random();
-
-        int randomIndex = random.nextInt(optionsOfMenu.size());
-        message.setText(optionsOfMenu.get(randomIndex));
-
-        SendMessage response = new SendMessage();
-        response.setChatId(String.valueOf(message.getChatId()));
-        switch(message.getText()){
-            case "breakfast":
-                return getBreakfastResponse(message);
-            case "dinner":
-                return getDinnerResponse(message);
-            case "lunch":
-                return getLunchResponse(message);
-            case "supper":
-                return getSupperResponse(message);
-        }
-        return response;
-    }
-
-    // breakfast response
-    private SendMessage getBreakfastResponse(Message message) {
-        SendMessage response = new SendMessage();
-        String breakfastMenu = "Breakfast menu!\n";
-        breakfastMenu += "1. Blueberry-Banana-Nut Smoothie\n";
-        breakfastMenu += "2. Classic Omelet and Greens\n";
-        breakfastMenu += "3. Curry-Avocado Crispy Egg Toast\n";
-
-        response.setChatId(String.valueOf(message.getChatId()));
-        response.setText(breakfastMenu);
-
-        return response;
-    }
-
-    // dinner response
-    private SendMessage getDinnerResponse(Message message){
-        SendMessage response = new SendMessage();
-        String dinnerMenu = "Dinner menu!\n";
-        dinnerMenu += "1. Creamy Lemon Chicken Pasta\n";
-        dinnerMenu += "2. Turkey Tacos\n";
-        dinnerMenu += "3. Vegetarian Lasagna\n";
-
-        response.setChatId(String.valueOf(message.getChatId()));
-        response.setText(dinnerMenu);
-
-        return response;
-    }
-
-    // lunch response
-    private SendMessage getLunchResponse(Message message) {
-        SendMessage response = new SendMessage();
-        String lunchMenu = "Lunch menu!\n";
-        lunchMenu += "1. Borsch with onions\n";
-        lunchMenu += "2. Fried potatoes\n";
-        lunchMenu += "3. Nuka cola\n";
-
-        response.setChatId(String.valueOf(message.getChatId()));
-        response.setText(lunchMenu);
-
-        return response;
-    }
-
-    // supper response
-    private SendMessage getSupperResponse(Message message) {
-        SendMessage response = new SendMessage();
-        String supperMenu = "Supper menu!\n";
-        supperMenu += "1. Caesar salad\n";
-        supperMenu += "2. Milk shake\n";
-        supperMenu += "3. Fish and chips\n";
-
-        response.setChatId(String.valueOf(message.getChatId()));
-        response.setText(supperMenu);
-
-        return response;
-    }
-
-    // get time
-    private SendMessage getCurrentTimeResponse(Message message) {
-        SendMessage response = new SendMessage();
-        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
-                Emoji.SMILING_FACE_WITH_OPEN_MOUTH_AND_SMILING_EYES);
-        response.setChatId(String.valueOf(message.getChatId()));
-        response.setReplyMarkup(getMainMenu());
-
-        return response;
-    }
-
-    // get date
-    private SendMessage getCurrentDateResponse(Message message) {
-        SendMessage response = new SendMessage();
-        response.setChatId(String.valueOf(message.getChatId()));
-        response.setReplyMarkup(getMainMenu());
-        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) +
-                Emoji.RELIEVED_FACE);
-
-        return response;
-    }
-    // pizza
-    private ReplyKeyboardMarkup createChoosePizzaMenu() {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
-
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow keyboardRow1 = new KeyboardRow();
-        keyboardRow1.add(CARBONARA_36_AS_USUAL_REQUEST);
-        keyboardRow1.add(MARGARITA_REQUEST);
-
-        KeyboardRow keyboardRow2 = new KeyboardRow();
-        keyboardRow2.add(PAPERONNI_REQUEST);
-        keyboardRow2.add(DRINKS_REQUEST);
-
-        keyboardRows.add(keyboardRow1);
-        keyboardRows.add(keyboardRow2);
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-
-        return replyKeyboardMarkup;
-    }
-
-    private SendMessage getOrderPizzaResponse(Message message) {
-        SendMessage response = new SendMessage();
-        String textResponse = "PLease make your completely independent choice :)";
-        response.setText(textResponse + Emoji.FACE_SAVOURING_DELICIOUS_FOOD);
-        response.setReplyMarkup(createChoosePizzaMenu());
         response.setChatId(String.valueOf(message.getChatId()));
 
         return response;
