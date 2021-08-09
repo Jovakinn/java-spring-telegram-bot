@@ -119,6 +119,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
                 return getSurpriseResponse(message);
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
+            case DATE_REQUEST:
+                return getCurrentDateResponse(message);
             case ORDER_PIZZA_REQUEST:
                 return getOrderPizzaResponse(message);
             default:
@@ -234,11 +236,22 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         return response;
     }
 
+    // get time
     private SendMessage getCurrentTimeResponse(Message message) {
         SendMessage response = new SendMessage();
         response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH::mm::ss")));
         response.setChatId(String.valueOf(message.getChatId()));
         response.setReplyMarkup(getMainMenu());
+
+        return response;
+    }
+
+    // get date
+    private SendMessage getCurrentDateResponse(Message message) {
+        SendMessage response = new SendMessage();
+        response.setChatId(String.valueOf(message.getChatId()));
+        response.setReplyMarkup(getMainMenu());
+        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
         return response;
     }
