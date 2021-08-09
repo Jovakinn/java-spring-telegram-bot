@@ -239,7 +239,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     // get time
     private SendMessage getCurrentTimeResponse(Message message) {
         SendMessage response = new SendMessage();
-        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH::mm::ss")));
+        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
+                Emoji.SMILING_FACE_WITH_OPEN_MOUTH_AND_SMILING_EYES);
         response.setChatId(String.valueOf(message.getChatId()));
         response.setReplyMarkup(getMainMenu());
 
@@ -251,7 +252,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         SendMessage response = new SendMessage();
         response.setChatId(String.valueOf(message.getChatId()));
         response.setReplyMarkup(getMainMenu());
-        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        response.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) +
+                Emoji.RELIEVED_FACE);
 
         return response;
     }
@@ -281,7 +283,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private SendMessage getOrderPizzaResponse(Message message) {
         SendMessage response = new SendMessage();
         String textResponse = "PLease make your completely independent choice :)";
-        response.setText(textResponse + Emoji.GRINNING_FACE_WITH_SMILING_EYES);
+        response.setText(textResponse + Emoji.FACE_SAVOURING_DELICIOUS_FOOD);
         response.setReplyMarkup(createChoosePizzaMenu());
         response.setChatId(String.valueOf(message.getChatId()));
 
