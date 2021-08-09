@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 @Component
 public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = Logger.getLogger(RecipeSuperBot.class.getName());
+    private static final String START_REQUEST = "/start";
     private static final String TIME_REQUEST = "Time";
     private static final String DATE_REQUEST = "Date";
     private static final String CAPITAL_REQUEST = "Capital?";
@@ -27,6 +28,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final String MARGARITA_REQUEST = "Margarita";
     private static final String PAPERONNI_REQUEST = "Paperonni";
     private static final String DRINKS_REQUEST = "Drinks";
+    public static final String BREAKFAST_REQUEST = "breakfast";
 
     @Override
     public String getBotUsername() {
@@ -117,7 +119,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         List<KeyboardRow> keyboardRows = new ArrayList<>();
 
         KeyboardRow keyboardRow1 = new KeyboardRow();
-        keyboardRow1.add("breakfast");
+        keyboardRow1.add(BREAKFAST_REQUEST);
         keyboardRow1.add("dinner");
 
         KeyboardRow keyboardRow2 = new KeyboardRow();
@@ -147,6 +149,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
     private SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
+            case START_REQUEST:
+                return getStartFunctionalResponse(message);
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
             case ORDER_PIZZA_REQUEST:
@@ -171,6 +175,19 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         response.setReplyMarkup(getMainMenu());
 
         return response;
+    }
+
+    // /start functionality
+    private SendMessage getStartFunctionalResponse(Message message) {
+        SendMessage response = new SendMessage();
+        String text = "Welcome to Recipe bot! Please choose the functional of the day!\n";
+        response.enableMarkdown(true);
+        response.setReplyMarkup(getMainMenu());
+        response.setText(text);
+        response.setChatId(String.valueOf(message.getChatId()));
+
+        return response;
+
     }
 
     private SendMessage getCurrentTimeResponse(Message message) {
