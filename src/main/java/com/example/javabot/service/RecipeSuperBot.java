@@ -1,5 +1,6 @@
 package com.example.javabot.service;
 
+import com.example.javabot.emoji.Emoji;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -205,8 +206,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
     private SendMessage getOrderPizzaResponse(Message message) {
         SendMessage response = new SendMessage();
-        String textResponse = "PLease make your completely independent choice:)";
-        response.setText(textResponse);
+        String textResponse = "PLease make your completely independent choice :)";
+        response.setText(textResponse + Emoji.GRINNING_FACE_WITH_SMILING_EYES);
         response.setReplyMarkup(createChoosePizzaMenu());
         response.setChatId(String.valueOf(message.getChatId()));
 
