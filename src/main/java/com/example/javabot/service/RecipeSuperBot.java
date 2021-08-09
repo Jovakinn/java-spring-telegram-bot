@@ -13,7 +13,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @Component
@@ -33,6 +35,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final String DINNER_REQUEST = "dinner";
     private static final String LUNCH_REQUEST = "lunch";
     private static final String SUPPER_REQUEST = "supper";
+    private static final String SURPRISE_REQUEST = "surprise";
 
     @Override
     public String getBotUsername() {
@@ -54,23 +57,6 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         String loggerInfoAboutUserRequest = "Chat id: " + "[" + ChatId +"] " + "User: "+ firstName + " " + lastName +
                 " (@" + username + ")" + " entered message: " + message.getText();
         LOGGER.info(loggerInfoAboutUserRequest);
-
-
- /*
-
-        if (message.getText().equals("surprise")) {
-            List<String> optionsOfMenu = Arrays.asList("breakfast", "dinner", "lunch", "supper");
-            Random random = new Random();
-
-            int randomIndex = random.nextInt(optionsOfMenu.size());
-            message.setText(optionsOfMenu.get(randomIndex));
-        }
-
-        if (message.getText().equals("supper")) {
-
-
-            sendMessage.setText(menu);
-        }*/
 
         try {
             execute(getResponseMessage(message));
@@ -97,7 +83,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         keyboardRow2.add(SUPPER_REQUEST);
 
         KeyboardRow keyboardRow3 = new KeyboardRow();
-        keyboardRow3.add("surprise");
+        keyboardRow3.add(SURPRISE_REQUEST);
 
         KeyboardRow keyboardRow4 = new KeyboardRow();
         keyboardRow2.add(TIME_REQUEST);
@@ -129,6 +115,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
                 return getLunchResponse(message);
             case SUPPER_REQUEST:
                 return getSupperResponse(message);
+            case SURPRISE_REQUEST:
+                return getSurpriseResponse(message);
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
             case ORDER_PIZZA_REQUEST:
@@ -165,7 +153,29 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         response.setChatId(String.valueOf(message.getChatId()));
 
         return response;
+    }
 
+    // surprise functionality
+    private SendMessage getSurpriseResponse(Message message) {
+        List<String> optionsOfMenu = Arrays.asList("breakfast", "dinner", "lunch", "supper");
+        Random random = new Random();
+
+        int randomIndex = random.nextInt(optionsOfMenu.size());
+        message.setText(optionsOfMenu.get(randomIndex));
+
+        SendMessage response = new SendMessage();
+        response.setChatId(String.valueOf(message.getChatId()));
+        switch(message.getText()){
+            case "breakfast":
+                return getBreakfastResponse(message);
+            case "dinner":
+                return getDinnerResponse(message);
+            case "lunch":
+                return getLunchResponse(message);
+            case "supper":
+                return getSupperResponse(message);
+        }
+        return response;
     }
 
     // breakfast response
