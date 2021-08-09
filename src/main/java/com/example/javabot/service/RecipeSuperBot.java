@@ -28,7 +28,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final String MARGARITA_REQUEST = "Margarita";
     private static final String PAPERONNI_REQUEST = "Paperonni";
     private static final String DRINKS_REQUEST = "Drinks";
-    public static final String BREAKFAST_REQUEST = "breakfast";
+    private static final String BREAKFAST_REQUEST = "breakfast";
+    private static final String DINNER_REQUEST = "dinner";
 
     @Override
     public String getBotUsername() {
@@ -62,18 +63,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
             message.setText(optionsOfMenu.get(randomIndex));
         }
 
-        if (message.getText().equals("breakfast")) {
-
-
-            sendMessage.setText(menu);
-        }
         if (message.getText().equals("dinner")) {
-            String menu = "Dinner menu!\n";
-            menu += "1. Creamy Lemon Chicken Pasta\n";
-            menu += "2. Turkey Tacos\n";
-            menu += "3. Vegetarian Lasagna\n";
 
-            sendMessage.setText(menu);
         }
 
         if (message.getText().equals("lunch")) {
@@ -111,7 +102,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
         KeyboardRow keyboardRow1 = new KeyboardRow();
         keyboardRow1.add(BREAKFAST_REQUEST);
-        keyboardRow1.add("dinner");
+        keyboardRow1.add(DINNER_REQUEST);
 
         KeyboardRow keyboardRow2 = new KeyboardRow();
         keyboardRow2.add("lunch");
@@ -144,6 +135,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
                 return getStartFunctionalResponse(message);
             case BREAKFAST_REQUEST:
                 return getBreakfastResponse(message);
+            case DINNER_REQUEST:
+                return getDinnerResponse(message);
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
             case ORDER_PIZZA_REQUEST:
@@ -183,6 +176,7 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
     }
 
+    // breakfast response
     private SendMessage getBreakfastResponse(Message message) {
         SendMessage response = new SendMessage();
         String breakfastMenu = "Breakfast menu!\n";
@@ -192,6 +186,20 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
         response.setChatId(String.valueOf(message.getChatId()));
         response.setText(breakfastMenu);
+
+        return response;
+    }
+
+    // dinner response
+    private SendMessage getDinnerResponse(Message message){
+        SendMessage response = new SendMessage();
+        String dinnerMenu = "Dinner menu!\n";
+        dinnerMenu += "1. Creamy Lemon Chicken Pasta\n";
+        dinnerMenu += "2. Turkey Tacos\n";
+        dinnerMenu += "3. Vegetarian Lasagna\n";
+
+        response.setChatId(String.valueOf(message.getChatId()));
+        response.setText(dinnerMenu);
 
         return response;
     }
