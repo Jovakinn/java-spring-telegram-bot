@@ -2,6 +2,7 @@ package com.example.javabot.utility;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
 import static com.example.javabot.models.Pizza.getOrderPizzaResponse;
 import static com.example.javabot.models.StandardResponse.doStandardResponseForNoRequest;
 import static com.example.javabot.models.StartOfApp.getStartFunctionalResponse;
@@ -11,6 +12,7 @@ import static com.example.javabot.models.meals.Dinner.getDinnerResponse;
 import static com.example.javabot.models.meals.Lunch.getLunchResponse;
 import static com.example.javabot.models.meals.Supper.getSupperResponse;
 import static com.example.javabot.models.meals.Surprise.getSurpriseResponse;
+import static com.example.javabot.models.typesOfPizza.Carbonara.getCarbonaraResponse;
 
 public class SelectorFunctional {
     private static final String START_REQUEST = "/start";
@@ -22,6 +24,10 @@ public class SelectorFunctional {
     private static final String LUNCH_REQUEST = "lunch";
     private static final String SUPPER_REQUEST = "supper";
     private static final String SURPRISE_REQUEST = "surprise";
+    private static final String CARBONARA_36_AS_USUAL_REQUEST = "Carbonara 36 as usual";
+    private static final String MARGARITA_REQUEST = "Margarita";
+    private static final String PAPERONNI_REQUEST = "Paperonni";
+    private static final String DRINKS_REQUEST = "Drinks";
 
     public static SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
@@ -41,6 +47,8 @@ public class SelectorFunctional {
                 return getCurrentTimeAndDate(message);
             case ORDER_PIZZA_REQUEST:
                 return getOrderPizzaResponse(message);
+            case CARBONARA_36_AS_USUAL_REQUEST:
+                return getCarbonaraResponse(message);
             default:
                 return doStandardResponseForNoRequest(message);
         }
