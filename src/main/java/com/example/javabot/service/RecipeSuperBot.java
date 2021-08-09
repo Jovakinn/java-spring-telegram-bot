@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 @Component
 public class RecipeSuperBot extends TelegramLongPollingBot {
+
     private static final Logger LOGGER = Logger.getLogger(RecipeSuperBot.class.getName());
     private static final String START_REQUEST = "/start";
     private static final String TIME_REQUEST = "Time";
@@ -30,6 +31,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
     private static final String DRINKS_REQUEST = "Drinks";
     private static final String BREAKFAST_REQUEST = "breakfast";
     private static final String DINNER_REQUEST = "dinner";
+    private static final String LUNCH_REQUEST = "lunch";
+    private static final String SUPPER_REQUEST = "supper";
 
     @Override
     public String getBotUsername() {
@@ -63,23 +66,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
             message.setText(optionsOfMenu.get(randomIndex));
         }
 
-        if (message.getText().equals("dinner")) {
-
-        }
-
-        if (message.getText().equals("lunch")) {
-            String menu = "Lunch menu!\n";
-            menu += "1. Borsch with onions\n";
-            menu += "2. Fried potatoes\n";
-            menu += "3. Nuka cola\n";
-
-            sendMessage.setText(menu);
-        }
         if (message.getText().equals("supper")) {
-            String menu = "Supper menu!\n";
-            menu += "1. Caesar salad\n";
-            menu += "2. Milk shake\n";
-            menu += "3. Fish and chips\n";
+
 
             sendMessage.setText(menu);
         }*/
@@ -105,8 +93,8 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
         keyboardRow1.add(DINNER_REQUEST);
 
         KeyboardRow keyboardRow2 = new KeyboardRow();
-        keyboardRow2.add("lunch");
-        keyboardRow2.add("supper");
+        keyboardRow2.add(LUNCH_REQUEST);
+        keyboardRow2.add(SUPPER_REQUEST);
 
         KeyboardRow keyboardRow3 = new KeyboardRow();
         keyboardRow3.add("surprise");
@@ -137,6 +125,10 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
                 return getBreakfastResponse(message);
             case DINNER_REQUEST:
                 return getDinnerResponse(message);
+            case LUNCH_REQUEST:
+                return getLunchResponse(message);
+            case SUPPER_REQUEST:
+                return getSupperResponse(message);
             case TIME_REQUEST:
                 return  getCurrentTimeResponse(message);
             case ORDER_PIZZA_REQUEST:
@@ -200,6 +192,34 @@ public class RecipeSuperBot extends TelegramLongPollingBot {
 
         response.setChatId(String.valueOf(message.getChatId()));
         response.setText(dinnerMenu);
+
+        return response;
+    }
+
+    // lunch response
+    private SendMessage getLunchResponse(Message message) {
+        SendMessage response = new SendMessage();
+        String lunchMenu = "Lunch menu!\n";
+        lunchMenu += "1. Borsch with onions\n";
+        lunchMenu += "2. Fried potatoes\n";
+        lunchMenu += "3. Nuka cola\n";
+
+        response.setChatId(String.valueOf(message.getChatId()));
+        response.setText(lunchMenu);
+
+        return response;
+    }
+
+    // supper response
+    private SendMessage getSupperResponse(Message message) {
+        SendMessage response = new SendMessage();
+        String supperMenu = "Supper menu!\n";
+        supperMenu += "1. Caesar salad\n";
+        supperMenu += "2. Milk shake\n";
+        supperMenu += "3. Fish and chips\n";
+
+        response.setChatId(String.valueOf(message.getChatId()));
+        response.setText(supperMenu);
 
         return response;
     }
