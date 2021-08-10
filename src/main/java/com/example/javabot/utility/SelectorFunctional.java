@@ -2,6 +2,8 @@ package com.example.javabot.utility;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import static com.example.javabot.models.Capital.getCapitalResponse;
 import static com.example.javabot.models.Pizza.getOrderPizzaResponse;
 import static com.example.javabot.models.StandardResponse.doStandardResponseForNoRequest;
 import static com.example.javabot.models.StartOfApp.getStartFunctionalResponse;
@@ -16,6 +18,10 @@ import static com.example.javabot.models.meals.Dinner.getDinnerResponse;
 import static com.example.javabot.models.meals.Lunch.getLunchResponse;
 import static com.example.javabot.models.meals.Supper.getSupperResponse;
 import static com.example.javabot.models.meals.Surprise.getSurpriseResponse;
+import static com.example.javabot.models.sights.IndependenceSquare.getIndependenceResponse;
+import static com.example.javabot.models.sights.KNU.getKNUResponse;
+import static com.example.javabot.models.sights.MotherlandMonument.getMotherlandResponse;
+import static com.example.javabot.models.sights.PecherskLavra.getLavraResponse;
 import static com.example.javabot.models.typesOfPizza.Carbonara.getCarbonaraResponse;
 import static com.example.javabot.models.typesOfPizza.Margarita.getMargaritaResponse;
 import static com.example.javabot.models.typesOfPizza.Paperonni.getPaperonniResponse;
@@ -38,6 +44,10 @@ public class SelectorFunctional {
     private static final String TEA_REQUEST = "tea";
     private static final String COLA_REQUEST = "Cola";
     private static final String SPRITE_REQUEST = "Sprite";
+    private static final String PECHERSK_LAVRA_REQUEST = "Pechersk lavra";
+    private static final String INDEPENDENCE_SQUARE_REQUEST = "Independence square";
+    private static final String MOTHERLAND_MONUMENT_REQUEST = "Motherland monument";
+    private static final String KNU_REQUEST = "KNU";
 
     public static SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
@@ -76,6 +86,17 @@ public class SelectorFunctional {
                 return getTeaResponse(message);
             case SPRITE_REQUEST:
                 return getSpriteResponse(message);
+                // capital realization
+            case CAPITAL_REQUEST:
+                return getCapitalResponse(message);
+            case PECHERSK_LAVRA_REQUEST:
+                return getLavraResponse(message);
+            case INDEPENDENCE_SQUARE_REQUEST:
+                return getIndependenceResponse(message);
+            case MOTHERLAND_MONUMENT_REQUEST:
+                return getMotherlandResponse(message);
+            case KNU_REQUEST:
+                return getKNUResponse(message);
             default:
                 return doStandardResponseForNoRequest(message);
         }
