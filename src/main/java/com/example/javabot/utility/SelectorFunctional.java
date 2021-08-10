@@ -6,7 +6,11 @@ import static com.example.javabot.models.Pizza.getOrderPizzaResponse;
 import static com.example.javabot.models.StandardResponse.doStandardResponseForNoRequest;
 import static com.example.javabot.models.StartOfApp.getStartFunctionalResponse;
 import static com.example.javabot.models.TimeAndDateUtility.getCurrentTimeAndDate;
+import static com.example.javabot.models.drinks.Coffee.getCoffeeResponse;
+import static com.example.javabot.models.drinks.Cola.getColaResponse;
+import static com.example.javabot.models.drinks.Sprite.getSpriteResponse;
 import static com.example.javabot.models.drinks.StartMenuOfDrinks.getStartOfDrinksMenu;
+import static com.example.javabot.models.drinks.Tea.getTeaResponse;
 import static com.example.javabot.models.meals.Breakfast.getBreakfastResponse;
 import static com.example.javabot.models.meals.Dinner.getDinnerResponse;
 import static com.example.javabot.models.meals.Lunch.getLunchResponse;
@@ -30,6 +34,10 @@ public class SelectorFunctional {
     private static final String MARGARITA_REQUEST = "Margarita";
     private static final String PAPERONNI_REQUEST = "Paperonni";
     private static final String DRINKS_REQUEST = "Drinks";
+    private static final String COFFEE_REQUEST = "coffee";
+    private static final String TEA_REQUEST = "tea";
+    private static final String COLA_REQUEST = "Cola";
+    private static final String SPRITE_REQUEST = "Sprite";
 
     public static SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
@@ -60,6 +68,14 @@ public class SelectorFunctional {
                 // drinks realization
             case DRINKS_REQUEST:
                 return getStartOfDrinksMenu(message);
+            case COLA_REQUEST:
+                return getColaResponse(message);
+            case COFFEE_REQUEST:
+                return getCoffeeResponse(message);
+            case TEA_REQUEST:
+                return getTeaResponse(message);
+            case SPRITE_REQUEST:
+                return getSpriteResponse(message);
             default:
                 return doStandardResponseForNoRequest(message);
         }
