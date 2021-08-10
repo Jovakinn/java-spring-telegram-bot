@@ -2,17 +2,19 @@ package com.example.javabot.utility;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
 import static com.example.javabot.models.Pizza.getOrderPizzaResponse;
 import static com.example.javabot.models.StandardResponse.doStandardResponseForNoRequest;
 import static com.example.javabot.models.StartOfApp.getStartFunctionalResponse;
 import static com.example.javabot.models.TimeAndDateUtility.getCurrentTimeAndDate;
+import static com.example.javabot.models.drinks.StartMenuOfDrinks.getStartOfDrinksMenu;
 import static com.example.javabot.models.meals.Breakfast.getBreakfastResponse;
 import static com.example.javabot.models.meals.Dinner.getDinnerResponse;
 import static com.example.javabot.models.meals.Lunch.getLunchResponse;
 import static com.example.javabot.models.meals.Supper.getSupperResponse;
 import static com.example.javabot.models.meals.Surprise.getSurpriseResponse;
 import static com.example.javabot.models.typesOfPizza.Carbonara.getCarbonaraResponse;
+import static com.example.javabot.models.typesOfPizza.Margarita.getMargaritaResponse;
+import static com.example.javabot.models.typesOfPizza.Paperonni.getPaperonniResponse;
 
 public class SelectorFunctional {
     private static final String START_REQUEST = "/start";
@@ -31,6 +33,7 @@ public class SelectorFunctional {
 
     public static SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
+            // recipe realization
             case START_REQUEST:
                 return getStartFunctionalResponse(message);
             case BREAKFAST_REQUEST:
@@ -45,10 +48,18 @@ public class SelectorFunctional {
                 return getSurpriseResponse(message);
             case  DATE_AND_TIME_REQUEST:
                 return getCurrentTimeAndDate(message);
+                // pizza realization
             case ORDER_PIZZA_REQUEST:
                 return getOrderPizzaResponse(message);
             case CARBONARA_36_AS_USUAL_REQUEST:
                 return getCarbonaraResponse(message);
+            case MARGARITA_REQUEST:
+                return getMargaritaResponse(message);
+            case PAPERONNI_REQUEST:
+                return getPaperonniResponse(message);
+                // drinks realization
+            case DRINKS_REQUEST:
+                return getStartOfDrinksMenu(message);
             default:
                 return doStandardResponseForNoRequest(message);
         }
