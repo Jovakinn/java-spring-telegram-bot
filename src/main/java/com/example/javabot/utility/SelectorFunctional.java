@@ -25,6 +25,8 @@ import static com.example.javabot.models.sights.PecherskLavra.getLavraResponse;
 import static com.example.javabot.models.typesOfPizza.Carbonara.getCarbonaraResponse;
 import static com.example.javabot.models.typesOfPizza.Margarita.getMargaritaResponse;
 import static com.example.javabot.models.typesOfPizza.Paperonni.getPaperonniResponse;
+import static com.example.javabot.service.BackToOrderPizzaMenu.getBackToOrderPizzaMenuResponse;
+import static com.example.javabot.service.BackToStartMenu.getBackToStartMenuResponse;
 
 public class SelectorFunctional {
     private static final String START_REQUEST = "/start";
@@ -48,6 +50,8 @@ public class SelectorFunctional {
     private static final String INDEPENDENCE_SQUARE_REQUEST = "Independence square";
     private static final String MOTHERLAND_MONUMENT_REQUEST = "Motherland monument";
     private static final String KNU_REQUEST = "KNU";
+    private static final String BACK_TO_START_MENU_REQUEST = "Back to start menu";
+    private static final String BACK_TO_PIZZA_ORDER_REQUEST = "Back to Pizza order";
 
     public static SendMessage getResponseMessage(Message message) {
         switch (message.getText()) {
@@ -97,6 +101,11 @@ public class SelectorFunctional {
                 return getMotherlandResponse(message);
             case KNU_REQUEST:
                 return getKNUResponse(message);
+                // back service
+            case BACK_TO_START_MENU_REQUEST:
+                return getBackToStartMenuResponse(message);
+            case BACK_TO_PIZZA_ORDER_REQUEST:
+                return getBackToOrderPizzaMenuResponse(message);
             default:
                 return doStandardResponseForNoRequest(message);
         }

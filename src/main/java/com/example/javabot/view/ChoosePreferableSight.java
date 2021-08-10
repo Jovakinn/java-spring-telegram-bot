@@ -12,6 +12,7 @@ public class ChoosePreferableSight {
     private static final String INDEPENDENCE_SQUARE_REQUEST = "Independence square";
     private static final String MOTHERLAND_MONUMENT_REQUEST = "Motherland monument";
     private static final String KNU_REQUEST = "KNU";
+    private static final String BACK_TO_START_MENU_REQUEST = "Back to start menu";
 
     public static ReplyKeyboardMarkup createChooseSightMenu() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -28,8 +29,12 @@ public class ChoosePreferableSight {
         keyboardRow2.add(MOTHERLAND_MONUMENT_REQUEST);
         keyboardRow2.add(KNU_REQUEST);
 
+        KeyboardRow keyboardRow3 = new KeyboardRow();
+        keyboardRow3.add(BACK_TO_START_MENU_REQUEST);
+
         keyboardRows.add(keyboardRow1);
         keyboardRows.add(keyboardRow2);
+        keyboardRows.add(keyboardRow3);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
 
         return replyKeyboardMarkup;
