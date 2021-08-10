@@ -11,6 +11,6 @@ public class JavaBotApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(JavaBotApplication.class, args);
-        logger.info("Application is started!");
+        logger.info("Application has been started!");
     }
 }
